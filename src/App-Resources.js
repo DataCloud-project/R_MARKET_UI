@@ -60,7 +60,6 @@ function ResourceComponent() {
 	const [req, setReq] = useState(JSON.stringify(json, null, "\t"));
 	const [data, setData] = useState([]);
 	const { promiseInProgress } = usePromiseTracker();
-	const [files, setFiles] = useState("");
 
 	async function findResources(json) {
 		if (checkMetamask) {
@@ -189,8 +188,7 @@ function ResourceComponent() {
 		const fileReader = new FileReader();
 		fileReader.readAsText(e.target.files[0], "UTF-8");
 		fileReader.onload = e => {
-			console.log("e.target.result", e.target.result);
-			setFiles(e.target.result);
+			setReq(e.target.result);
 		};
 	};
 
