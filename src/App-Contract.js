@@ -1,14 +1,13 @@
 import './App.css';
 
 import { IExecOrderModule, IExecStorageModule, IExecOrderbookModule } from 'iexec';
-import { config, getAddress, checkMetamask } from './App';
+import { getConfig, getAddress, checkBrowser } from './App';
 import { trackPromise } from 'react-promise-tracker';
 
 async function createContract(wpOrderHash) {
-	if (checkMetamask) {
+	if (checkBrowser()) {
 		// instanciate iExec SDK
-		//const iexec = IExec.fromConfig(config);
-
+		const config = getConfig();
 		const storageModule = IExecStorageModule.fromConfig(config);
 		const isIpfsStorageInitialized = await storageModule.checkStorageTokenExists(getAddress());
 
@@ -40,7 +39,7 @@ async function createContract(wpOrderHash) {
 				workerpoolorder,
 				requestorder,
 			}).then((dealid) => {
-				console.log(dealid);
+				alert('Contract created with id: '.concat(dealid.dealid));
 			}));
 
 		}

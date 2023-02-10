@@ -6,9 +6,8 @@ import { useState } from 'react';
 //import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 //import { faChevronCircleDown } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios';
-import { getAddress } from './App';
 import { IExecDealModule, IExecTaskModule } from 'iexec';
-import { config, checkMetamask } from './App';
+import { getConfig, checkBrowser, getAddress } from './App';
 import { BlobReader, TextWriter, ZipReader } from "@zip.js/zip.js";
 
 function MyContractsComponent() {
@@ -34,35 +33,40 @@ function MyContractsComponent() {
   transform: ${open ? 'rotate(180deg)' : 'rotate(0deg)'}
 `
 */
+
+
 	//const [contracts, setContracts] = useState('');
 	const [data, setData] = useState([]);
+	const [contract, setContract] = useState('');
 	const [status, setStatus] = useState('');
 	const [result, setResult] = useState('');
 
 	async function getContracts() {
-		const address = await getAddress();
-		const contracts = await axios.get('http://20.71.159.181:5000/contracts/list?userAddress='.concat(address));
+		if (checkBrowser()) {
+			const address = await getAddress();
+			const contracts = await axios.get('http://20.71.159.181:5000/contracts/list?userAddress='.concat(address));
 
-		//var result = contracts.data.join('\r\n\r\n');
-		if (contracts.data.length === 0) {
-			//result = 'This account does not have any contract yet. Try to create one first!';
-			alert('This account does not have any contract yet. Try to create one first!');
+			//var result = contracts.data.join('\r\n\r\n');
+			if (contracts.data.length === 0) {
+				//result = 'This account does not have any contract yet. Try to create one first!';
+				alert('This account does not have any contract yet. Try to create one first!');
+			}
+			//setContracts(result);
+			var data = [];
+			contracts.data.forEach(element => data.push(JSON.parse(element)));
+			setData(data);
 		}
-		//setContracts(result);
-		var data = [];
-		contracts.data.forEach(element => data.push(JSON.parse(element)));
-		setData(data);
-
 	}
 
 	const [contractCompleted, setContractCompleted] = useState(false);
 
 	async function getStatus(contract) {
 		setResult('');
-		if (checkMetamask) {
+		if (checkBrowser()) {
 			if (contract === '') {
 				alert('Please provide a contract ID!');
 			} else {
+				const config = getConfig();
 				const dealModule = IExecDealModule.fromConfig(config);
 				try {
 					const dealObservable = await dealModule.obsDeal(contract);
@@ -84,10 +88,11 @@ function MyContractsComponent() {
 	}
 
 	async function getResult(contract) {
-		if (checkMetamask) {
+		if (checkBrowser()) {
 			if (contract === '') {
 				alert('Please provide a contract ID!');
 			} else {
+				const config = getConfig();
 				const dealModule = IExecDealModule.fromConfig(config);
 				try {
 					const deal = await dealModule.show(contract);
@@ -143,13 +148,21 @@ function MyContractsComponent() {
 
 	}
 
+	function handleClickSelect(event) {
+		if (event.target.value !== contract) {
+			setContract(event.target.value);
+			setStatus('');
+			setResult('');
+			setContractCompleted(false);
+		}
+	}
+
 	function handleClickStatus(event) {
 		getStatus(event.target.value);
 	}
 
 	function handleClickResult(event) {
 		getResult(event.target.value);
-		setContractCompleted(false);
 	}
 
 	return (
@@ -170,6 +183,17 @@ function MyContractsComponent() {
 			<div>
 				<button onClick={getContracts}> get My Contracts </button>
 			</div>
+			<br />
+			<label style={{ color: "#000000" }}> Contract ID </label>
+			<input
+				type="text"
+				id="contract"
+				name="contract"
+				value={contract}
+				placeholder="Click on 'Get Status' and the corresponding contract ID will appear here..."
+				readOnly={true}
+				style={{ width: "700px" }}
+			/>
 			<br />
 			<label style={{ color: "#000000" }}> Status </label>
 			<input
@@ -192,14 +216,20 @@ function MyContractsComponent() {
 				readOnly={true}
 				style={{ width: "700px" }}
 			/>
+			<br />
+			<button value={contract} onClick={handleClickStatus} disabled={contract === ''}>
+				Get Status
+			</button>
+			<button value={contract} onClick={handleClickResult} disabled={!contractCompleted}>
+				Get Result
+			</button>
 			<div>
 				<table className="styled-table">
 					<thead>
 						<tr>
 							<th>Contract ID</th>
 							<th>Creation Time</th>
-							<th>Status</th>
-							<th>Result</th>
+							<th>Select</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -209,13 +239,8 @@ function MyContractsComponent() {
 									<td>{item.contractID}</td>
 									<td>{item.startTime}</td>
 									<td>
-										<button className="link" value={item.contractID} onClick={handleClickStatus}>
-											Get Status
-										</button>
-									</td>
-									<td>
-										<button className="link" value={item.contractID} onClick={handleClickResult} disabled={!contractCompleted}>
-											Get Result
+										<button className="link" value={item.contractID} onClick={handleClickSelect}>
+											Select
 										</button>
 									</td>
 								</tr>

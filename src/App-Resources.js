@@ -6,7 +6,7 @@ import { useState } from 'react';
 //import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 //import { faChevronCircleDown } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios';
-import { config, checkMetamask } from './App';
+import { getConfig, checkBrowser } from './App';
 import { IExecHubModule } from 'iexec';
 import { createContract } from './App-Contract';
 import { usePromiseTracker } from "react-promise-tracker";
@@ -62,7 +62,7 @@ function ResourceComponent() {
 	const { promiseInProgress } = usePromiseTracker();
 
 	async function findResources(json) {
-		if (checkMetamask) {
+		if (await checkBrowser()) {
 			// implementation details
 			//var result;
 			var resources;
@@ -148,14 +148,12 @@ function ResourceComponent() {
 	}
 
 	async function getCategory(id) {
-		if (checkMetamask) {
-			const hubModule = IExecHubModule.fromConfig(config);
-			//const nbCategory = await hubModule.countCategory();
-			//console.log(nbCategory.words[0]);
-			const category = await hubModule.showCategory(id);
-			return category;
-		}
-		return null;
+		const config = getConfig();
+		const hubModule = IExecHubModule.fromConfig(config);
+		//const nbCategory = await hubModule.countCategory();
+		//console.log(nbCategory.words[0]);
+		const category = await hubModule.showCategory(id);
+		return category;
 	}
 
 	/*
@@ -244,12 +242,12 @@ function ResourceComponent() {
 		/>
 		*/
 		<div className="content">
-			<label style={{ color: "#000000", fontSize: "0.5em"  }}> Please upload a JSON file for your resource requirements or use/customize the provided one below: </label>
+			<label style={{ color: "#000000", fontSize: "0.5em" }}> Please upload a JSON file for your resource requirements or use/customize the provided one below: </label>
 			<br />
-			<input type="file" onChange={handleChangeFile} style={{ color: "#000000", fontSize: "0.5em" }}/>
+			<input type="file" onChange={handleChangeFile} style={{ color: "#000000", fontSize: "0.5em" }} />
 			<br />
 			<form onSubmit={handleSubmit}>
-			<br />
+				<br />
 				<label>
 					<textarea
 						id="req"
