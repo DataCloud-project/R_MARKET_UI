@@ -66,7 +66,7 @@ function ResourceComponent() {
 			// implementation details
 			//var result;
 			var resources;
-			const rawResources = await axios.post('http://20.71.159.181:5000/resources', json);
+			const rawResources = await axios.post('https://20.71.159.181:5000/resources', json);
 			if (rawResources.data.length === 0) {
 				//result = 'There are currently no resources available. Try again later!';
 				alert('There are currently no resources available. Try again later!');
