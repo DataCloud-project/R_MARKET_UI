@@ -6,7 +6,7 @@ import { useState } from 'react';
 //import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 //import { faChevronCircleDown } from '@fortawesome/free-solid-svg-icons'
 import { IExecDealModule, IExecTaskModule } from 'iexec';
-import { config, checkMetamask } from './App';
+import { getConfig, checkBrowser } from './App';
 import { BlobReader, TextWriter, ZipReader } from "@zip.js/zip.js";
 
 const [status, setStatus] = useState('');
@@ -15,9 +15,11 @@ const [result, setResult] = useState('');
 
 const [contractCompleted, setContractCompleted] = useState(false);
 
+const config = getConfig();
+
 async function getStatus(contract) {
 	setResult('');
-	if (checkMetamask) {
+	if (checkBrowser()) {
 		if (contract === '') {
 			alert('Please provide a contract ID!');
 		} else {
@@ -42,7 +44,7 @@ async function getStatus(contract) {
 }
 
 async function getResult(contract) {
-	if (checkMetamask) {
+	if (checkBrowser()) {
 		if (contract === '') {
 			alert('Please provide a contract ID!');
 		} else {

@@ -15,47 +15,8 @@ const resultProxyURL = 'http://20.71.159.181:13200';
 const smsURL = 'http://20.71.159.181:13300';
 const ipfsGatewayURL = 'http://20.71.159.181:8080';
 
-// create the configuration
-const config = new IExecConfig(
-	{ ethProvider: window.ethereum },
-	{
-		hubAddress: hubAddress,
-		iexecGatewayURL: iexecGatewayURL,
-		resultProxyURL: resultProxyURL,
-		smsURL: smsURL,
-		ipfsGatewayURL: ipfsGatewayURL,
-		isNative: true,
-		useGas: false
-	});
-
-
-async function getAddress() {
-	// implementation details
-	if (checkMetamask) {
-		// Do something
-		const address = await window.ethereum.request({ method: 'eth_requestAccounts' })
-			.then(res => {
-				// Return the address of the wallet
-				return JSON.stringify(res).substr(2, 42);
-			})
-		//getBalance(address);
-		return address;
-	}
-}
-
-function checkMetamask() {
-	if (window.ethereum) {
-		return true;
-	} else {
-		alert("install metamask extension!!")
-		return false;
-	}
-}
-
-
 function App() {
 	console.warn = () => { };
-
 	return (
 		<div className="App">
 			<header className="App-header">
@@ -80,6 +41,87 @@ function App() {
 	);
 }
 
+// create the configuration
+function getConfig() {
+	if (checkBrowser()) {
+		return new IExecConfig(
+			{ ethProvider: window.ethereum },
+			{
+				hubAddress: hubAddress,
+				iexecGatewayURL: iexecGatewayURL,
+				resultProxyURL: resultProxyURL,
+				smsURL: smsURL,
+				ipfsGatewayURL: ipfsGatewayURL,
+				isNative: true,
+				useGas: false
+			});
+	}
+}
 
 
-export { App, getAddress, checkMetamask, config };
+async function getAddress() {
+	// implementation details
+	if (checkBrowser()) {
+		// Do something
+		const address = await window.ethereum.request({ method: 'eth_requestAccounts' })
+			.then(res => {
+				// Return the address of the wallet
+				return JSON.stringify(res).substr(2, 42);
+			})
+		//getBalance(address);
+		return address;
+	}
+}
+
+async function checkBrowser() {
+	if (checkMetamask()) {
+		const isAccountDefined = await checkAccountDefined();
+		if (isAccountDefined) {
+			return checkBlockchainConfig();
+		} else {
+			return false;
+		}
+	}
+	return false;
+
+}
+function checkMetamask() {
+	if (window.ethereum === undefined || window.ethereum === null || window.ethereum === '') {
+		alert("Please install metamask extension for using R-MARKET!!")
+		return false;
+	} else {
+		return true;
+	}
+}
+
+function checkBlockchainConfig() {
+	var chainID = 0;
+	try {
+		chainID = window.ethereum.networkVersion;
+		if (chainID !== '65535') {
+			alert('Please connect your metamask wallet to the Datacloud blockchain network (chain id 65535) for using R-MARKET!!')
+		}
+
+	} catch (e) {
+		console.log(e);
+	}
+
+	return chainID === '65535';
+
+}
+
+async function checkAccountDefined() {
+	var address = '0x';
+	try {
+		const res = await window.ethereum.request({ method: 'eth_requestAccounts' });
+		address = JSON.stringify(res).substr(2, 42);
+	} catch (e) {
+		alert('Please connect to your metamask account (or create one) for using R-MARKET!!')
+	}
+
+	return address !== '0x';
+}
+
+
+
+export { App, getAddress, checkBrowser, getConfig };
