@@ -44,7 +44,7 @@ function MyContractsComponent() {
 	async function getContracts() {
 		if (checkBrowser()) {
 			const address = await getAddress();
-			const contracts = await axios.get('http://20.71.159.181:5000/contracts/list?userAddress='.concat(address));
+			const contracts = await axios.get('https://20.71.159.181:5000/contracts/list?userAddress='.concat(address));
 
 			//var result = contracts.data.join('\r\n\r\n');
 			if (contracts.data.length === 0) {
