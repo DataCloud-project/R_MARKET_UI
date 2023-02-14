@@ -99,7 +99,7 @@ function checkBlockchainConfig() {
 	try {
 		chainID = window.ethereum.networkVersion;
 		if (chainID !== '65535') {
-			alert('Please connect your metamask wallet to the Datacloud blockchain network (chain id 65535) for using R-MARKET!!')
+			alert('Please connect your metamask wallet to the Datacloud blockchain network (IP: http://20.71.153.50:8545, chainID: 65535) for using R-MARKET!!')
 		}
 
 	} catch (e) {
