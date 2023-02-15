@@ -48,7 +48,7 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 Usage of R-MARKET UI is divided into two main stages: (i) Creation of a contract with a resource and (ii) the return of the IP address of said resource. 
 These two steps are managed by two different tabs: (1) "Resource", which manages the discovery of resources as well as the creation of contracts and (ii) "My Contracts", which allows to list all the contracts created by the user in a table and retrieve their status (in progress, completed or failed) as well as the result of the execution (IP address of the resource).
 
-Note that in order to use the R-MARKET UI, you can either deploy it on your local network following the instructions aforementioned or [click here](https://datacloud-market.euprojects.net/) (Note: If you use our deployed R_MARKET_UI by clicking on the link provided, please allow mixed-content (https/http compatibility) in your browser, you can follow this [tutorial](https://experienceleague.adobe.com/docs/target/using/experiences/vec/troubleshoot-composer/mixed-content.html?lang=en) to do so) to open it in your browser (preferrably [Chrome](https://www.google.com/chrome/?brand=YTUH&gclid=CjwKCAiA_6yfBhBNEiwAkmXy53jfoxDzP_N3zeTX5-toqRBYReB03DTQMtD684N-S1-w0e_nKJ_kLhoCg34QAvD_BwE&gclsrc=aw.ds)). The following of the document explains how to use R_MARKET_UI for:
+Note that in order to use the R-MARKET UI, you can either deploy it on your local network following the instructions aforementioned or [click here](https://datacloud-market.euprojects.net/) <span style="color:red"> (Note: If you use our deployed R-MARKET-UI by clicking on the provided [link](https://datacloud-market.euprojects.net/), please allow mixed-content (https/http compatibility) in your browser, you can follow this [tutorial](https://experienceleague.adobe.com/docs/target/using/experiences/vec/troubleshoot-composer/mixed-content.html?lang=en) to do so) </span> to open it in your browser (preferrably [Chrome](https://www.google.com/chrome/?brand=YTUH&gclid=CjwKCAiA_6yfBhBNEiwAkmXy53jfoxDzP_N3zeTX5-toqRBYReB03DTQMtD684N-S1-w0e_nKJ_kLhoCg34QAvD_BwE&gclsrc=aw.ds)). The following of the document explains how to use R-MARKET-UI to:
 
 1. Find resources available on the market
 2. Choose a particular resource and create a contract with it
@@ -56,7 +56,7 @@ Note that in order to use the R-MARKET UI, you can either deploy it on your loca
 4. Return the IP address of a resource concerned by a contract
 
 The R-MARKET tool uses the blockchain technology to create contracts between *workers* (resources) and *requesters* (you). In this context, you will have to send transactions via R-MARKET-UI and sign them using [metamask](https://metamask.io). 
-Therefore, in order to use R_MARKET_UI, you will first need to install [metamask](https://metamask.io) and configure it by following the instructions below:
+Therefore, in order to use R-MARKET-UI, you will first need to install [metamask](https://metamask.io) and configure it by following the instructions below:
 
 ### Metamask configuration
 
@@ -95,7 +95,7 @@ The configuration of metamask follows a few steps:
    
    <img src="Images/Metamask/Metamask-15.png" width="400"  />  <br/><br/>
    
-3. Connect your metamask account to R_MARKET_UI (a pop-up notification will appear when you load the web app or click on any button)
+3. Connect your metamask account to R-MARKET-UI (a pop-up notification will appear when you load the web app or click on any button)
 
    <img src="Images/Metamask/Metamask-16.png" width="400"  />  <br/><br/>
    
