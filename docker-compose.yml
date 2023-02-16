@@ -1,17 +1,18 @@
-version: '3.4'
+version: '3.7'
 
 services:
 
-  rmarket:
-    build: .
-    command: npm run start
-    
+  r-market-front-end:
+    image: react-ui
+
     volumes:
-      - .:/usr/app
-      - /usr/app/node_modules
+      - .:/react-ui
+      - /react-ui/node_modules
     expose:
       - 5555
     ports:
       - "5555:5555"
-    
+
     restart: unless-stopped
+    environment:
+      - CHOKIDAR_USEPOLLING=true
