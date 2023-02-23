@@ -87,6 +87,29 @@ function MyContractsComponent() {
 		}
 	}
 
+	async function getText(blob) {
+		// Creates a BlobReader object used to read `zipFileBlob`.
+		const zipFileReader = new BlobReader(blob);
+		// Creates a TextWriter object where the content of the first entry in the zip
+		// will be written.
+		const helloWorldWriter = new TextWriter();
+
+		// Creates a ZipReader object reading the zip content via `zipFileReader`,
+		// retrieves metadata (name, dates, etc.) of the first entry, retrieves its
+		// content via `helloWorldWriter`, and closes the reader.
+		const zipReader = new ZipReader(zipFileReader);
+		const entries = await zipReader.getEntries();
+		var entry = entries.shift();
+		while (entry.filename !== 'result.txt') {
+			entry = entries.shift();
+		}
+
+		const text = await entry.getData(helloWorldWriter);
+		await zipReader.close();
+
+		return text;
+	}
+
 	async function getResult(contract) {
 		if (checkBrowser()) {
 			if (contract === '') {
@@ -97,32 +120,17 @@ function MyContractsComponent() {
 				try {
 					const deal = await dealModule.show(contract);
 					const taskModule = IExecTaskModule.fromConfig(config);
-					const result = await taskModule.fetchResults(deal.tasks[0]);
+					const task = deal.tasks[0];
+					const result = await taskModule.fetchResults(task);
 					const binary = await result.blob();
-					// Creates a BlobReader object used to read `zipFileBlob`.
-					const zipFileReader = new BlobReader(binary);
-					// Creates a TextWriter object where the content of the first entry in the zip
-					// will be written.
-					const helloWorldWriter = new TextWriter();
+					const text = await getText(binary);
+					setResult(text.split(" ").pop());
 
-					// Creates a ZipReader object reading the zip content via `zipFileReader`,
-					// retrieves metadata (name, dates, etc.) of the first entry, retrieves its
-					// content via `helloWorldWriter`, and closes the reader.
-					const zipReader = new ZipReader(zipFileReader);
-					const entries = await zipReader.getEntries();
-					var entry = entries.shift();
-					while (entry.filename !== 'result.txt') {
-						entry = entries.shift();
-					}
-
-					const text = await entry.getData(helloWorldWriter);
-					await zipReader.close();
-
-					setResult(text);
 				} catch (error) {
 					console.log(error);
 					alert('Contract not found!');
 				}
+
 			}
 		}
 	}
@@ -130,15 +138,15 @@ function MyContractsComponent() {
 	async function defineStatus(message) {
 		switch (message) {
 			case 'DEAL_COMPLETED':
-				setStatus("The task has been executed, you can retrieve the result of the execution!");
+				setStatus("The contract has been executed, you can retrieve the result of the execution!");
 				setContractCompleted(true);
 				break;
 			case 'DEAL_UPDATED':
-				setStatus("Task execution in progress, please wait...");
+				setStatus("Contract execution in progress, please wait...");
 				setContractCompleted(false);
 				break;
 			case 'DEAL_TIMEDOUT':
-				setStatus("Task failed!");
+				setStatus("Contract failed!");
 				setContractCompleted(false);
 				break;
 			default:
@@ -190,7 +198,7 @@ function MyContractsComponent() {
 				id="contract"
 				name="contract"
 				value={contract}
-				placeholder="Click on 'Get Status' and the corresponding contract ID will appear here..."
+				placeholder="Click on 'Select' and the corresponding contract ID will appear here..."
 				readOnly={true}
 				style={{ width: "700px" }}
 			/>
@@ -206,13 +214,13 @@ function MyContractsComponent() {
 				style={{ width: "700px" }}
 			/>
 			<br />
-			<label style={{ color: "#000000" }}> Result </label>
+			<label style={{ color: "#000000" }}> Worker IP </label>
 			<input
 				type="text"
 				id="result"
 				name="result"
 				value={result}
-				placeholder="Click on 'Get Result' and the result of the corresponding contract will appear here..."
+				placeholder="Click on 'Get Worker IP' and the IP of the reserved worker will appear here..."
 				readOnly={true}
 				style={{ width: "700px" }}
 			/>
@@ -221,7 +229,7 @@ function MyContractsComponent() {
 				Get Status
 			</button>
 			<button value={contract} onClick={handleClickResult} disabled={!contractCompleted}>
-				Get Result
+				Get Worker IP
 			</button>
 			<div>
 				<table className="styled-table">

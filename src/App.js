@@ -3,6 +3,7 @@ import './App.css';
 
 import * as React from 'react';
 import ResourceComponent from './App-Resources';
+import CurrentResourcesComponent from './App-Current-Resources';
 import MyContractsComponent from './App-MyContracts';
 import { IExecConfig } from 'iexec';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -25,9 +26,13 @@ function App() {
 				<div>
 					<Tabs>
 						<TabList>
-							<Tab>Resources</Tab>
+							<Tab>Available Resources</Tab>
+							<Tab>Contract Creation</Tab>
 							<Tab>My Contracts</Tab>
 						</TabList>
+						<TabPanel>
+							<CurrentResourcesComponent />
+						</TabPanel>
 						<TabPanel>
 							<ResourceComponent />
 						</TabPanel>
