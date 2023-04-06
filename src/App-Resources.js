@@ -58,6 +58,9 @@ function ResourceComponent() {
 
 	//const [message, setMessage] = useState('');
 	const [req, setReq] = useState(JSON.stringify(json, null, "\t"));
+	const [hours, setHours] = useState(0);
+	const [minutes, setMinutes] = useState(0);
+	const [seconds, setSeconds] = useState(0);
 	const [data, setData] = useState([]);
 	const { promiseInProgress } = usePromiseTracker();
 
@@ -172,13 +175,30 @@ function ResourceComponent() {
 		setReq(event.target.value);
 	}
 
+	function handleHours(event) {
+		setHours(event.target.value);
+	}
+
+	function handleMinutes(event) {
+		setMinutes(event.target.value);
+	}
+
+	function handleSeconds(event) {
+		setSeconds(event.target.value);
+	}
+
 	function handleSubmit(event) {
 		findResources(JSON.parse(req));
 		event.preventDefault();
 	}
 
 	function handleClick(event) {
-		createContract(event.target.value);
+		var duration = parseInt(hours) * 3600 + parseInt(minutes) * 60 + parseInt(seconds)
+		if (duration <= 36000) {
+			createContract(event.target.value, duration);
+		} else {
+			alert("Duration can not exceed 10 hours!");
+		}
 	}
 
 
@@ -274,7 +294,7 @@ function ResourceComponent() {
 							<th>CPU Architecture</th>
 							<th>OS Type</th>
 							<th>TEE</th>
-							<th>Create Contract</th>
+							<th>Create Contract (10h max)</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -290,7 +310,24 @@ function ResourceComponent() {
 									<td>{item.requirements.osRequirement['os-type']}</td>
 									<td>{item.requirements.tee ? 'Yes' : 'No'}</td>
 									<td>
-										<button className="link" value={item.orderHash} onClick={handleClick} disabled={promiseInProgress}>
+										<form onSubmit={handleClick}>
+											<label style={{ color: "#ffffff", fontSize: "1em" }}> Hours: </label>
+											<input type="number" id="hours" name="hours" value={hours}
+												onChange={handleHours}
+												min="00" max="10" />
+											<br />
+											<label style={{ color: "#ffffff", fontSize: "1em" }}> Minutes: </label>
+											<input type="number" id="minutes" name="minutes" value={minutes}
+												onChange={handleMinutes}
+												min="00" max="59" />
+											<br />
+											<label style={{ color: "#ffffff", fontSize: "1em" }}> Seconds: </label>
+											<input type="number" id="seconds" name="seconds" value={seconds}
+												onChange={handleSeconds}
+												min="00" max="59" />
+											<br />
+										</form>
+										<button value={item.orderHash} onClick={handleClick} disabled={promiseInProgress}>
 											{promiseInProgress ? 'Contract Creation in progress...' : 'Create Contract'}
 										</button>
 									</td>

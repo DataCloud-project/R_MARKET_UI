@@ -4,7 +4,7 @@ import { IExecOrderModule, IExecStorageModule, IExecOrderbookModule } from 'iexe
 import { getConfig, getAddress, checkBrowser } from './App';
 import { trackPromise } from 'react-promise-tracker';
 
-async function createContract(wpOrderHash) {
+async function createContract(wpOrderHash, duration) {
 	if (checkBrowser()) {
 		// instanciate iExec SDK
 		const config = getConfig();
@@ -21,7 +21,7 @@ async function createContract(wpOrderHash) {
 
 		let requestorder = await getRequestOrder(orderBookModule);
 		if (requestorder === null) {
-			requestorder = await publishRequestOrder(orderModule);
+			requestorder = await publishRequestOrder(orderModule, duration);
 		}
 		const workerpoolorder = await getWPOrder(orderBookModule, wpOrderHash);
 		if (workerpoolorder === null) {
@@ -34,6 +34,10 @@ async function createContract(wpOrderHash) {
 
 		if (requestorder !== null && workerpoolorder !== null && apporder !== null) {
 			//alert(`Creation of the contract, please wait...`);
+			console.log(requestorder);
+			console.log(workerpoolorder);
+			console.log(apporder);
+			
 			trackPromise(orderModule.matchOrders({
 				apporder,
 				workerpoolorder,
@@ -41,14 +45,20 @@ async function createContract(wpOrderHash) {
 			}).then((dealid) => {
 				alert('Contract created with id: '.concat(dealid.dealid));
 			}));
+			
 
 		}
 	}
 }
 
-const appAddress = '0xffe6dAB7e1F670bB51ba831E8ed74CB146816991';
+const appAddress = '0x5D80A92DbB1e810021E9B06AAE4aeA0471C84742';
 
-async function publishRequestOrder(orderModule) {
+async function publishRequestOrder(orderModule, duration) {
+	console.log(duration);
+	const address = await getAddress();
+	const args = address.toLowerCase().concat(' ').concat(duration);
+	console.log(args);
+	
 	const unsignedRequestorder = await orderModule.createRequestorder({
 		app: appAddress,
 		category: 6,
@@ -57,7 +67,7 @@ async function publishRequestOrder(orderModule) {
 			iexec_result_storage_proxy: 'http://20.71.159.181:13200',
 			iexec_result_encryption: false,
 			iexec_input_files: [],
-			iexec_args: ''
+			iexec_args: args
 		}
 	});
 
