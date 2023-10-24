@@ -1,137 +1,177 @@
-import logo from './logo.jpg';
-import './App.css';
+import { useState, useEffect, useMemo } from "react";
 
-import * as React from 'react';
-import ResourceComponent from './App-Resources';
-import CurrentResourcesComponent from './App-Current-Resources';
-import MyContractsComponent from './App-MyContracts';
-import MyResourcesComponent from './App-MyResources';
-import { IExecConfig } from 'iexec';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import 'react-tabs/style/react-tabs.css';
+// react-router components
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 
+// @mui material components
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import Icon from "@mui/material/Icon";
 
-const hubAddress = '0xC129e7917b7c7DeDfAa5Fff1FB18d5D7050fE8ca';
-const iexecGatewayURL = 'http://20.71.159.181:3000';
-const resultProxyURL = 'http://20.71.159.181:13200';
-const smsURL = 'http://20.71.159.181:13300';
-const ipfsGatewayURL = 'http://20.71.159.181:8080';
+// R-MARKET React components
+import MDBox from "components/MDBox";
 
-function App() {
-	console.warn = () => { };
-	return (
-		<div className="App">
-			<header className="App-header">
-				<img src={logo} alt="logo" width="300px" />
-				<br />
-				<div>
-					<Tabs>
-						<TabList>
-							<Tab>Available Resources</Tab>
-							<Tab>Contract Creation</Tab>
-							<Tab>My Contracts</Tab>
-							<Tab>My Resources</Tab>
-						</TabList>
-						<TabPanel>
-							<CurrentResourcesComponent />
-						</TabPanel>
-						<TabPanel>
-							<ResourceComponent />
-						</TabPanel>
-						<TabPanel>
-							<MyContractsComponent />
-						</TabPanel>
-						<TabPanel>
-							<MyResourcesComponent />
-						</TabPanel>
-					</Tabs>
-				</div>
-			</header>
-		</div>
+// R-MARKET React example components
+import Sidenav from "examples/Sidenav";
+import Configurator from "examples/Configurator";
+
+// R-MARKET React themes
+import theme from "assets/theme";
+import themeRTL from "assets/theme/theme-rtl";
+
+// R-MARKET React Dark Mode themes
+import themeDark from "assets/theme-dark";
+import themeDarkRTL from "assets/theme-dark/theme-rtl";
+
+// RTL plugins
+import rtlPlugin from "stylis-plugin-rtl";
+import { CacheProvider } from "@emotion/react";
+import createCache from "@emotion/cache";
+
+// R-MARKET React routes
+import routes from "routes";
+
+// R-MARKET React contexts
+import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
+
+export default function App() {
+	const [controller, dispatch] = useMaterialUIController();
+	const {
+		miniSidenav,
+		direction,
+		layout,
+		openConfigurator,
+		sidenavColor,
+		transparentSidenav,
+		whiteSidenav,
+		darkMode,
+	} = controller;
+	const [onMouseEnter, setOnMouseEnter] = useState(false);
+	const [rtlCache, setRtlCache] = useState(null);
+	const { pathname } = useLocation();
+
+	// Cache for the rtl
+	useMemo(() => {
+		const cacheRtl = createCache({
+			key: "rtl",
+			stylisPlugins: [rtlPlugin],
+		});
+
+		setRtlCache(cacheRtl);
+	}, []);
+
+	// Open sidenav when mouse enter on mini sidenav
+	const handleOnMouseEnter = () => {
+		if (miniSidenav && !onMouseEnter) {
+			setMiniSidenav(dispatch, false);
+			setOnMouseEnter(true);
+		}
+	};
+
+	// Close sidenav when mouse leave mini sidenav
+	const handleOnMouseLeave = () => {
+		if (onMouseEnter) {
+			setMiniSidenav(dispatch, true);
+			setOnMouseEnter(false);
+		}
+	};
+
+	// Change the openConfigurator state
+	const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
+
+	// Setting the dir attribute for the body element
+	useEffect(() => {
+		document.body.setAttribute("dir", direction);
+	}, [direction]);
+
+	// Setting page scroll to 0 when changing the route
+	useEffect(() => {
+		document.documentElement.scrollTop = 0;
+		document.scrollingElement.scrollTop = 0;
+	}, [pathname]);
+
+	const getRoutes = (allRoutes) =>
+		allRoutes.map((route) => {
+			if (route.collapse) {
+				return getRoutes(route.collapse);
+			}
+
+			if (route.route) {
+				return <Route exact path={route.route} element={route.component} key={route.key} />;
+			}
+
+			return null;
+		});
+
+	const configsButton = (
+		<MDBox
+			display="flex"
+			justifyContent="center"
+			alignItems="center"
+			width="3.25rem"
+			height="3.25rem"
+			bgColor="white"
+			shadow="sm"
+			borderRadius="50%"
+			position="fixed"
+			right="2rem"
+			bottom="2rem"
+			zIndex={99}
+			color="dark"
+			sx={{ cursor: "pointer" }}
+			onClick={handleConfiguratorOpen}
+		>
+			<Icon fontSize="small" color="inherit">
+				settings
+			</Icon>
+		</MDBox>
+	);
+
+	return direction === "rtl" ? (
+		<CacheProvider value={rtlCache}>
+			<ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
+				<CssBaseline />
+				{layout === "dashboard" && (
+					<>
+						<Sidenav
+							color={sidenavColor}
+							brandName="R-MARKET"
+							routes={routes}
+							onMouseEnter={handleOnMouseEnter}
+							onMouseLeave={handleOnMouseLeave}
+						/>
+						<Configurator />
+						{configsButton}
+					</>
+				)}
+				{layout === "vr" && <Configurator />}
+				<Routes>
+					{getRoutes(routes)}
+					<Route path="*" element={<Navigate to="/dashboard" />} />
+				</Routes>
+			</ThemeProvider>
+		</CacheProvider>
+	) : (
+		<ThemeProvider theme={darkMode ? themeDark : theme}>
+			<CssBaseline />
+			{layout === "dashboard" && (
+				<>
+					<Sidenav
+						color={sidenavColor}
+						brandName="R-MARKET"
+						routes={routes}
+						onMouseEnter={handleOnMouseEnter}
+						onMouseLeave={handleOnMouseLeave}
+					/>
+					<Configurator />
+					{configsButton}
+				</>
+			)}
+			{layout === "vr" && <Configurator />}
+			<Routes>
+				{getRoutes(routes)}
+				<Route path="*" element={<Navigate to="/dashboard" />} />
+			</Routes>
+		</ThemeProvider>
 	);
 }
-
-// create the configuration
-function getConfig() {
-	if (checkBrowser()) {
-		return new IExecConfig(
-			{ ethProvider: window.ethereum },
-			{
-				hubAddress: hubAddress,
-				iexecGatewayURL: iexecGatewayURL,
-				resultProxyURL: resultProxyURL,
-				smsURL: smsURL,
-				ipfsGatewayURL: ipfsGatewayURL,
-				isNative: true,
-				useGas: false
-			});
-	}
-}
-
-
-async function getAddress() {
-	// implementation details
-	if (checkBrowser()) {
-		// Do something
-		const address = await window.ethereum.request({ method: 'eth_requestAccounts' })
-			.then(res => {
-				// Return the address of the wallet
-				return JSON.stringify(res).substr(2, 42);
-			})
-		//getBalance(address);
-		return address;
-	}
-}
-
-async function checkBrowser() {
-	if (checkMetamask()) {
-		const isAccountDefined = await checkAccountDefined();
-		if (isAccountDefined) {
-			return checkBlockchainConfig();
-		} else {
-			return false;
-		}
-	}
-	return false;
-
-}
-function checkMetamask() {
-	if (window.ethereum === undefined || window.ethereum === null || window.ethereum === '') {
-		alert("Please install metamask extension for using R-MARKET!!")
-		return false;
-	} else {
-		return true;
-	}
-}
-
-function checkBlockchainConfig() {
-	var chainID = 0;
-	try {
-		chainID = window.ethereum.networkVersion;
-		if (chainID !== '65535') {
-			alert('Please connect your metamask wallet to the Datacloud blockchain network (IP: http://20.71.153.50:8545, chainID: 65535) for using R-MARKET!!')
-		}
-
-	} catch (e) {
-		console.log(e);
-	}
-
-	return chainID === '65535';
-
-}
-
-async function checkAccountDefined() {
-	var address = '0x';
-	try {
-		const res = await window.ethereum.request({ method: 'eth_requestAccounts' });
-		address = JSON.stringify(res).substr(2, 42);
-	} catch (e) {
-		alert('Please connect to your metamask account (or create one) for using R-MARKET!!')
-	}
-
-	return address !== '0x';
-}
-
-
-
-export { App, getAddress, checkBrowser, getConfig };
