@@ -17,12 +17,6 @@ WORKDIR /react-ui
 
 COPY . .
 
-RUN ls -a
-
-RUN ls R-MARKET_SDK
-
-RUN ls node_modules/iexec
-
 # Build the project and copy the files
 RUN npm run build
 
@@ -44,4 +38,3 @@ COPY --from=builder /react-ui/build /usr/share/nginx/html
 EXPOSE 5555
 
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
-
