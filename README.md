@@ -1,219 +1,156 @@
-# [R-MARKET React](http://demos.creative-tim.com/material-dashboard-react/#/dashboard?ref=readme-mdr) [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?url=https://www.creative-tim.com/product/material-dashboard-react&text=Check%20Material%20Dashboard%202%20react%20made%20by%20@CreativeTim%20#webdesign%20#dashboard%20#materialdesign%20#react%20https://www.creative-tim.com/product/material-dashboard-react)
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-![version](https://img.shields.io/badge/version-2.2.0-blue.svg) [![GitHub issues open](https://img.shields.io/github/issues/creativetimofficial/material-dashboard-react.svg)](https://github.com/creativetimofficial/material-dashboard-react/issues?q=is%3Aopen+is%3Aissue) [![GitHub issues closed](https://img.shields.io/github/issues-closed-raw/creativetimofficial/material-dashboard-react.svg)](https://github.com/creativetimofficial/material-dashboard-react/issues?q=is%3Aissue+is%3Aclosed)
+Before running the available scripts, please run `npm install` to install all the dependecies
 
-![Image](https://s3.amazonaws.com/creativetim_bucket/products/71/original/material-dashboard-react.jpg?1638950990)
+## Available Scripts
 
-R-MARKET React is our newest free MUI Admin Template based on React. If you’re a developer looking to create an admin dashboard that is developer-friendly, rich with features, and highly customisable, here is your match. Our innovative MUI & React dashboard comes with a beautiful design inspired by Google's Material Design and it will help you create stunning websites & web apps to delight your clients.
+In the project directory, you can run:
 
-**Fully Coded Elements**
-R-MARKET React is built with over 70 frontend individual elements, like buttons, inputs, navbars, nav tabs, cards, or alerts, giving you the freedom of choosing and combining. All components can take variations in color, which you can easily modify using MUI styled() API and sx prop. You will save a lot of time going from prototyping to full-functional code because all elements are implemented.
+### `npm start`
 
-This free MUI & React Dashboard is coming with prebuilt design blocks, so the development process is seamless,
-switching from our pages to the real website is very easy to be done.
+Runs the app in the development mode.\
+Open [http://localhost:5555](http://localhost:5555) to view it in your browser.
 
-Special thanks go to:
-- [Nepcha Analytics](https://nepcha.com?ref=readme) for the analytics tool. Nepcha is already integrated with Material Dashboard React. You can use it to gain insights into your sources of traffic.
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-**Documentation built by Developers**
+### `npm test`
 
-Each element is well presented in very complex documentation.
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-You can read more about the [documentation here](https://www.creative-tim.com/learning-lab/react/overview/material-dashboard/).
+### `npm run build`
 
-**Example Pages**
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-If you want to get inspiration or just show something directly to your clients, you can jump-start your development with our pre-built example pages. You will be able to quickly set up the basic structure for your web project.
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-View [example pages here](https://demos.creative-tim.com/material-dashboard-react/#/dashboard).
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-**HELPFUL LINKS**
+## Deployment
 
-- View [Github Repository](https://github.com/creativetimofficial/material-dashboard-react)
-- Check [FAQ Page](https://www.creative-tim.com/faq)
+### Build docker image
 
-#### Special thanks
+`docker build -t r-market-front-end .`
 
-During the development of this dashboard, we have used many existing resources from awesome developers. We want to thank them for providing their tools open source:
+### Run docker image
 
-- [MUI](https://mui.com/) - The React UI library for faster and easier web development.
-- [React ChartJS 2](http://reactchartjs.github.io/react-chartjs-2/#/) - Simple yet flexible React charting for designers & developers.
-- [ChromaJS](https://gka.github.io/chroma.js/) - A small-ish zero-dependency JavaScript library for all kinds of color conversions and color scales.
+`docker run -it --rm -v ${PWD}:/app -v /app/node_modules -p 5555:5555 -e CHOKIDAR_USEPOLLING=true r-market-front-end`
 
-Let us know your thoughts below. And good luck with development!
+### Run docker compose service
 
-## Table of Contents
+`docker compose up -d`
 
-- [Versions](#versions)
-- [Demo](#demo)
-- [Quick Start](#quick-start)
-- [Documentation](#documentation)
-- [File Structure](#file-structure)
-- [Browser Support](#browser-support)
-- [Resources](#resources)
-- [Reporting Issues](#reporting-issues)
-- [Technical Support or Questions](#technical-support-or-questions)
-- [Licensing](#licensing)
-- [Useful Links](#useful-links)
+## Usage
 
-## Versions
+Usage of R-MARKET UI is divided into two main stages: (i) Creation of a contract with a resource and (ii) the return of the IP address of said resource. 
+These two steps are managed by two different tabs: (1) "Resource", which manages the discovery of resources as well as the creation of contracts and (ii) "My Contracts", which allows to list all the contracts created by the user in a table and retrieve their status (in progress, completed or failed) as well as the result of the execution (IP address of the resource).
 
-[<img src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/logos/react-logo.png?raw=true" width="60" height="60" />](https://www.creative-tim.com/product/material-dashboard-react?ref=readme-mdr)
+Note that in order to use the R-MARKET UI, you can either deploy it on your local network following the instructions aforementioned or [click here](https://datacloud-market.euprojects.net/) (🔴IMPORTANT🔴 If you use our deployed R-MARKET-UI by clicking on the provided [link](https://datacloud-market.euprojects.net/), please allow mixed-content (https/http compatibility) in your browser, you can follow this [tutorial](https://experienceleague.adobe.com/docs/target/using/experiences/vec/troubleshoot-composer/mixed-content.html?lang=en) to do so) to open it in your browser (preferrably [Chrome](https://www.google.com/chrome/?brand=YTUH&gclid=CjwKCAiA_6yfBhBNEiwAkmXy53jfoxDzP_N3zeTX5-toqRBYReB03DTQMtD684N-S1-w0e_nKJ_kLhoCg34QAvD_BwE&gclsrc=aw.ds)). The following of the document explains how to use R-MARKET-UI to:
 
-| React |
-| ----- |
+1. Find resources available on the market
+2. Choose a particular resource and create a contract with it
+3. See the contracts made with the different resources
+4. Return the IP address of a resource concerned by a contract
 
-| [![Material Dashboard React](https://s3.amazonaws.com/creativetim_bucket/products/71/thumb/material-dashboard-react.jpg?1638950990)](http://demos.creative-tim.com/material-dashboard-react/#/dashboard?ref=readme-mdr)
+The R-MARKET tool uses the blockchain technology to create contracts between *workers* (resources) and *requesters* (you). In this context, you will have to send transactions via R-MARKET-UI and sign them using [metamask](https://metamask.io). 
+Therefore, in order to use R-MARKET-UI, you will first need to install [metamask](https://metamask.io) and configure it by following the instructions below:
 
-## Demo
+### Metamask configuration
 
-- [Dashboard](http://demos.creative-tim.com/material-dashboard-react/#/dashboard?ref=readme-sudr)
-- [Profile](https://demos.creative-tim.com/material-dashboard-react/#/profile?ref=readme-sudr)
-- [RTL](https://demos.creative-tim.com/material-dashboard-react/#/rtl?ref=readme-sudr)
-- [Sign In](https://demos.creative-tim.com/material-dashboard-react/#/authentication/sign-in?ref=readme-sudr)
-- [Sign Up](https://demos.creative-tim.com/material-dashboard-react/#/authentication/sign-up?ref=readme-sudr)
+The configuration of metamask follows a few steps:
+1. Create an account. 
 
-[View More](https://demos.creative-tim.com/material-dashboard-react/#/dashboard?ref=readme-mdr).
+   <img src="Images/Metamask/Metamask-1.png" width="300"  />  <br/><br/>
+   
+   <img src="Images/Metamask/Metamask-2.png" width="300"  />  <br/><br/>
+   
+   <img src="Images/Metamask/Metamask-3.png" width="300"  />  <br/><br/>
+   
+   <img src="Images/Metamask/Metamask-4.png" width="300"  />  <br/><br/>
+   
+   <img src="Images/Metamask/Metamask-5.png" width="300"  />  <br/><br/>
+   
+   <img src="Images/Metamask/Metamask-6.png" width="300"  />  <br/><br/>
+   
+   <img src="Images/Metamask/Metamask-7.png" width="300"  />  <br/><br/>
+   
+   <img src="Images/Metamask/Metamask-8.png" width="300"  />  <br/><br/>
+   
+   <img src="Images/Metamask/Metamask-9.png" width="300"  />  <br/><br/>
+   
+   <img src="Images/Metamask/Metamask-10.png" width="300"  />  <br/><br/>
+   
+   <img src="Images/Metamask/Metamask-11.png" width="300"  />  <br/><br/>
+   
+2. Configure the blockchain network to be used.
 
-## Quick start
+   <img src="Images/Metamask/Metamask-12.png" width="300"  />  <br/><br/>
+   
+   <img src="Images/Metamask/Metamask-13.png" width="300"  />  <br/><br/>
+   
+   <img src="Images/Metamask/Metamask-14.png" width="300"  />  <br/><br/>
+   
+   <img src="Images/Metamask/Metamask-15.png" width="400"  />  <br/><br/>
+   
+3. Connect your metamask account to R-MARKET-UI (a pop-up notification will appear when you load the web app or click on any button)
 
-Quick start options:
+   <img src="Images/Metamask/Metamask-16.png" width="400"  />  <br/><br/>
+   
+   <img src="Images/Metamask/Metamask-17.png" width="400"  />  <br/><br/>
 
-- Download from [Creative Tim](https://www.creative-tim.com/product/material-dashboard-react?ref=readme-mdr).
 
-## Terminal Commands
+### Find Resources
 
-1. Download and Install NodeJs LTS version from [NodeJs Official Page](https://nodejs.org/en/download/).
-2. Navigate to the root ./ directory of the product and run `yarn install` or `npm install` to install our local dependencies.
+1. Upload a JSON file containing your requirements in the desired format (as shown in the example) of use/customize the provided example. 
 
-## Documentation
+   <img src="Images/Resources/Resources-1.png" width="400"  />  <br/><br/>
+   
+2. Click on "Find Resources" to display the available resources in a table. 
 
-The documentation for the Material Dashboard is hosted at our [website](https://www.creative-tim.com/learning-lab/react/overview/material-dashboard/?ref=readme-mdr).
+   <img src="Images/Resources/Resources-2.png" width="400"  />  <br/><br/>
+   
+3. Select one of the available resources by clicking on "Create contract" in the corresponding row. Metamask notifications will pop up asking you to sign transactions.
 
-### What's included
+   <img src="Images/Resources/Resources-3.png" width="300"  />  <br/><br/>
+   
+   <img src="Images/Resources/Resources-4.png" width="300"  />  <br/><br/>
+   
+   <img src="Images/Resources/Resources-5.png" width="300"  />  <br/><br/>
+   
+   <img src="Images/Resources/Resources-6.png" width="300"  />  <br/><br/>
+   
+4. One last Metamask notification will pop up asking you to sign a contract with the selected resource.
+   
+   <img src="Images/Resources/Resources-7.png" width="300"  />  <br/><br/>
+   
+5. Contract creation could take some time but an alert eventually pops up notifying you of the creation of the contract with its ID (which you can find in the "My Contracts" tab).
+   
+   <img src="Images/Resources/Resources-8.png" width="400"  />  <br/><br/>
 
-Within the download you'll find the following directories and files:
+### Retrieve the result of a contract execution
 
-```
-material-dashboard-react
-    ├── public
-    │   ├── apple-icon.png
-    │   ├── favicon.png
-    │   ├── index.html
-    │   ├── manifest.json
-    │   └── robots.txt
-    ├── src
-    │   ├── assets
-    │   │   ├── images
-    │   │   └── theme
-    │   │       ├── base
-    │   │       ├── components
-    │   │       ├── functions
-    │   │       ├── index.js
-    │   │       └── theme-rtl.js
-    │   │   └── theme-dark
-    │   │       ├── base
-    │   │       ├── components
-    │   │       ├── functions
-    │   │       ├── index.js
-    │   │       └── theme-rtl.js
-    │   ├── components
-    │   │   ├── MDAlert
-    │   │   ├── MDAvatar
-    │   │   ├── MDBadge
-    │   │   ├── MDBox
-    │   │   ├── MDButton
-    │   │   ├── MDInput
-    │   │   ├── MDPagination
-    │   │   ├── MDProgress
-    │   │   ├── MDSnackbar
-    │   │   └── MDTypography
-    │   ├── context
-    │   ├── examples
-    │   │   ├── Breadcrumbs
-    │   │   ├── Cards
-    │   │   ├── Charts
-    │   │   ├── Configurator
-    │   │   ├── Footer
-    │   │   ├── Items
-    │   │   ├── LayoutContainers
-    │   │   ├── Lists
-    │   │   ├── Navbars
-    │   │   ├── Sidenav
-    │   │   ├── Tables
-    │   │   └── Timeline
-    │   ├── layouts
-    │   │   ├── authentication
-    │   │   ├── billing
-    │   │   ├── dashboard
-    │   │   ├── notifications
-    │   │   ├── profile
-    │   │   ├── rtl
-    │   │   └── tables
-    │   ├── App.js
-    │   ├── index.js
-    │   └── routes.js
-    ├── .eslintrc.json
-    ├── .prettierrc.json
-    ├── CHANGELOG.md
-    ├── ISSUE_TEMPLATE.md
-    ├── jsconfig.json
-    ├── LICENSE.md
-    ├── package.json
-    └── README.md
-```
 
-## Browser Support
+1. Click on "Get My Contracts" to display the contracts of the user (selected in metamask). 
 
-At present, we officially aim to support the last two versions of the following browsers:
+   <img src="Images/Contracts/Contracts-1.png" width="400"  />  <br/><br/>
+   
+   <img src="Images/Contracts/Contracts-2.png" width="400"  />  <br/><br/>
+   
+2. Select one of your contracts by clicking on "Select", you should see its ID appearing in the corresponding text area and "Get Status" button should be enabled.
 
-<img src="https://s3.amazonaws.com/creativetim_bucket/github/browser/chrome.png" width="64" height="64"> <img src="https://s3.amazonaws.com/creativetim_bucket/github/browser/firefox.png" width="64" height="64"> <img src="https://s3.amazonaws.com/creativetim_bucket/github/browser/edge.png" width="64" height="64"> <img src="https://s3.amazonaws.com/creativetim_bucket/github/browser/safari.png" width="64" height="64"> <img src="https://s3.amazonaws.com/creativetim_bucket/github/browser/opera.png" width="64" height="64">
-
-## Resources
-
-- [Live Preview](https://demos.creative-tim.com/material-dashboard-react/#/dashboard?ref=readme-mdr)
-- [Download Page](https://www.creative-tim.com/product/material-dashboard-react?ref=readme-mdr)
-- Documentation is [here](https://www.creative-tim.com/learning-lab/react/overview/material-dashboard/?ref=readme-mdr)
-- [License Agreement](https://www.creative-tim.com/license?ref=readme-mdr)
-- [Support](https://www.creative-tim.com/contact-us?ref=readme-mdr)
-- Issues: [Github Issues Page](https://github.com/creativetimofficial/material-dashboard-react/issues)
-- [Nepcha Analytics](https://nepcha.com?ref=readme) - Analytics tool for your website
-
-## Reporting Issues
-
-We use GitHub Issues as the official bug tracker for the Material Dashboard React. Here are some advices for our users that want to report an issue:
-
-1. Make sure that you are using the latest version of the Material Dashboard React. Check the CHANGELOG from your dashboard on our [website](https://www.creative-tim.com/product/material-dashboard-react?ref=readme-mdr).
-2. Providing us reproducible steps for the issue will shorten the time it takes for it to be fixed.
-3. Some issues may be browser specific, so specifying in what browser you encountered the issue might help.
-
-## Technical Support or Questions
-
-If you have questions or need help integrating the product please [contact us](https://www.creative-tim.com/contact-us?ref=readme-mdr) instead of opening an issue.
-
-## Licensing
-
-- Copyright 2023 [Creative Tim](https://www.creative-tim.com?ref=readme-mdr)
-- Creative Tim [license](https://www.creative-tim.com/license?ref=readme-mdr)
-
-## Useful Links
-
-- [More products](https://www.creative-tim.com/templates?ref=readme-mdr) from Creative Tim
-
-- [Tutorials](https://www.youtube.com/channel/UCVyTG4sCw-rOvB9oHkzZD1w)
-
-- [Freebies](https://www.creative-tim.com/bootstrap-themes/free?ref=readme-mdr) from Creative Tim
-
-- [Affiliate Program](https://www.creative-tim.com/affiliates/new?ref=readme-mdr) (earn money)
-
-##### Social Media
-
-Twitter: <https://twitter.com/CreativeTim>
-
-Facebook: <https://www.facebook.com/CreativeTim>
-
-Dribbble: <https://dribbble.com/creativetim>
-
-Google+: <https://plus.google.com/+CreativetimPage>
-
-Instagram: <https://instagram.com/creativetimofficial>
+   <img src="Images/Contracts/Contracts-3.png" width="400"  />  <br/><br/>
+   
+3. Click on "Get status" to fetch its status, you should see the information in the corresponding text are (in progress in this case).
+ 
+   <img src="Images/Contracts/Contracts-4.png" width="400"  />  <br/><br/>
+   
+4. When the task fails or completes, its status changes automatically.
+   
+   <img src="Images/Contracts/Contracts-5.png" width="400"  />  <br/><br/>
+   
+5. If the status is "completed", the "Get Result" button should be enabled. Click on "Get Result" to fetch the result of the contract, you should see the information in the corresponding text are (in progress in this case).
+   
+   <img src="Images/Contracts/Contracts-6.png" width="400"  />  <br/><br/>
