@@ -3,20 +3,22 @@ import './App.css';
 import { getIexec, getAddress, checkBrowser } from './App';
 import { trackPromise } from 'react-promise-tracker';
 
-async function createContract(wpOrderHash, duration) {
+async function createContract(wpOrderHash, duration, ip, token, hash) {
 	if (checkBrowser()) {
 		// instanciate iExec SDK
 		const iexec = getIexec();
+		/*
 		const isIpfsStorageInitialized = await iexec.storage.checkStorageTokenExists(getAddress());
 
 		if (!isIpfsStorageInitialized) {
 			const token = await iexec.storage.defaultStorageLogin();
 			await iexec.storage.pushStorageToken(token);
 		}
+		*/
 
 		let requestorder = await getRequestOrder();
 		if (requestorder === null) {
-			requestorder = await publishRequestOrder(duration);
+			requestorder = await publishRequestOrder(duration, ip, token, hash);
 		}
 		const workerpoolorder = await getWPOrder(wpOrderHash);
 		if (workerpoolorder === null) {
@@ -33,7 +35,9 @@ async function createContract(wpOrderHash, duration) {
 				apporder,
 				workerpoolorder,
 				requestorder,
-			}).then((res) => {
+			}, {
+			checkRequest: false,
+		}).then((res) => {
 				alert('Contract created with id: '.concat(res.dealid));
 			})
 				.catch((error) => {
@@ -63,7 +67,7 @@ async function interruptContract(taskid) {
 		// instanciate iExec SDK
 		const iexec = getIexec();
 
-		trackPromise(await iexec.task.interrupt(taskid).then((res) => {
+		trackPromise(iexec.task.interrupt(taskid).then((res) => {
 			alert('Task successfully interrupted');
 		})
 			.catch((error) => {
@@ -74,10 +78,10 @@ async function interruptContract(taskid) {
 
 const appAddress = '0xBA71ca91CA7979Df41Ef6239C85162D17352BA7e';
 
-async function publishRequestOrder(duration) {
+async function publishRequestOrder(duration, ip, token, hash) {
 	const address = await getAddress();
-	const args = address.toLowerCase();
-
+	const args = address.toLowerCase() + ' ' + ip + ' ' + token + ' ' + hash;
+	
 	const unsignedRequestorder = await getIexec().order.createRequestorder({
 		app: appAddress,
 		category: 5,
@@ -91,9 +95,14 @@ async function publishRequestOrder(duration) {
 		}
 	});
 
-	const requestOrder = await getIexec().order.signRequestorder(unsignedRequestorder);
+	const requestOrder = await getIexec().order.signRequestorder(unsignedRequestorder, {
+			checkRequest: false,
+		});
+		
 	try {
-		await getIexec().order.publishRequestorder(requestOrder);
+		await getIexec().order.publishRequestorder(requestOrder, {
+				checkRequest: false,
+			});
 	} catch (error) {
 		alert('Unable to publish request !');
 	}

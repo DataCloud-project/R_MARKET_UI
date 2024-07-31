@@ -20,7 +20,6 @@ import Card from "@mui/material/Card";
 // R-MARKET React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
-import MDAvatar from "components/MDAvatar";
 import MDProgress from "components/MDProgress";
 
 import Dialog from '@mui/material/Dialog';
@@ -136,7 +135,7 @@ function Tables() {
 			//var result = contracts.data.join('\r\n\r\n');
 			if (contracts.data.length === 0) {
 				//result = 'This account does not have any contract yet. Try to create one first!';
-				alert('This account does not have any contract yet. Try to create one first!');
+				//alert('This account does not have any contract yet. Try to create one first!');
 			}
 			//setContracts(result);
 			var data = [];
@@ -251,15 +250,6 @@ function Tables() {
 		}
 		return status;
 	}
-
-	const Project = ({ image, name }) => (
-		<MDBox display="flex" alignItems="center" lineHeight={1}>
-			<MDAvatar src={image} name={name} size="sm" variant="rounded" />
-			<MDTypography display="block" variant="button" fontWeight="medium" ml={1} lineHeight={1}>
-				{name}
-			</MDTypography>
-		</MDBox>
-	);
 
 	const Progress = ({ color, value }) => (
 		<MDBox display="flex" alignItems="center">

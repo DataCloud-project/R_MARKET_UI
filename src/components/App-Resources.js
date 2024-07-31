@@ -30,6 +30,11 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 
 function ResourceComponent() {
+	
+	const CLUSTER_IP = "192.168.99.1";
+	const CLUSTER_TOKEN = "i5p8hf.xtk3i1fw0sk1le0y";
+	const CLUSTER_HASH = "sha256:de2cddb6b84d6b3e0e6c90b26a2e6f72772b4ac61a666a92a0fdc27be9120925";
+
 
 	const Order = ({ name, url }) => (
 		<MDBox display="flex" alignItems="center" lineHeight={1}>
@@ -313,7 +318,7 @@ function ResourceComponent() {
 		} else if (duration > maxDuration) {
 			alert(`Duration can not exceed total duration specified by the resource provider (${maxDuration} seconds)!`);
 		} else {
-			createContract(orderHash, duration);
+			createContract(orderHash, duration, CLUSTER_IP, CLUSTER_TOKEN, CLUSTER_HASH);
 		}
 	};
 
